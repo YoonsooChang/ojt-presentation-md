@@ -1,0 +1,33 @@
+/* @theme my-theme */
+@import 'default';
+
+@font-face {
+    font-family: D2Coding;
+    src: url('./D2Coding-Ver1.3.2-20180524.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: D2Coding;
+    src: url('./D2CodingBold-Ver1.3.2-20180524.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+section {
+    background-color: #fff2e6;
+    color: #352c2e;
+    font-family: D2Coding;
+}
+
+section > h1 {
+    font-size: 64px;
+}
+
+section.title-topleft h2{
+    position: absolute;
+    top: 15%;
+    left: 7%;
+    max-width: 86%;
+}
