@@ -38,3 +38,10 @@ section.title-topleft h2 {
   left: 6%;
   max-width: 88%;
 }
+
+section.title-topleft img {
+  position: absolute;
+  top: 25%;
+  left: 6%;
+  max-width: 86%;
+}

@@ -20,6 +20,8 @@ theme: my-theme
 
 <Steps style="font-size:40px">
 
+## Contents
+
 - Code Smell &#128169;
 
 - Git Branch 전략 <img src='img/gitlogo.png' width=40 height=40>
@@ -74,11 +76,20 @@ theme: my-theme
 
 ## A-1) Long Method (긴 메소드)
 
+길이가 너무 긴 메소드의 경우 여러가지 방법을 통해 줄일 수 있다.
+
+내용이 긴 경우 일부를 새로운 함수로 추출해 호출하거나,
+클래스 메소드로 추출하여 인스턴스를 갖도록 하여 호출할 수 있다. 
+
 ---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## A-2) Data Clump (데이터 덩어리)
+
+클래스 필드들을 의미 상 분류할 수 있는 경우 개별적인 클래스를 생성해 포함시킨다.                     
+
+어떤 필드 묶음을 사용하는 코드에서 그 중 하나를 제거했을 때 의미가 유지되지 않으면 하나의 **Clump**로 판단할 수 있다.
 
 ---
 
@@ -86,17 +97,43 @@ theme: my-theme
 
 ## A-3) Large Class (거대한 클래스)
 
+### 클래스가 너무 많은 역할을 하게 되면?
+
+ 사용처도 늘어나고 인스턴스의 수도 그만큼 늘어날 것이다. 
+ 그만큼 코드의 중복이 늘어나고 유지보수에 문제가 생길 가능성이 높아진다.
+ 
+ 기능을 둘로 나눌 수 있으면 별도 클래스로 추출하고, 비슷한 맥락에서 여러 방식으로 구현될 수 있으면 상속 관계(서브 클래스나 인터페이스)를 만들어준다.
+
+> 멤버를 기억해야 하는 부담이 줄고, 코드 중복이 줄어든다.
+
 ---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## A-4) Primitive Obsession (기본 타입에 대한 강박)
 
+꼭 기본타입(Primitive)를 써야하는가? 레코드(record, class, user-defined...)타입을 새로 정의해서 사용하자.
+
+처음에 한 가지 타입의 데이터만 사용할 경우에는 값을 저장하기 위해 기본타입을 사용한다.
+하지만 그러다가 여러 타입의 다른 필드들이 필요해져서 클래스가 커진다면?
+
+그룹화할 수 있는 필드들을 새 클래스로 추출해서 인스턴스를 갖도록 하자.
+
 ---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## A-5) Long Parameter List (긴 파라미터 리스트)
+
+하나의 메소드가 3,4개보다 많은 파라미터를 받는 경우,
+각각을 이해하고 사용하기 힘들다, 순서에도 결과가 영향을 받는다. 
+
+만일 여러 알고리즘이 이 메소드를 거치게 되면 파라미터 개수가 많아질 수 있다.  어떤 알고리즘이 실행될 지를 판단해야 하기 때문.
+
+
+- 만약 인자들 중에 다른 객체의 메소드가 반환한 값들이 여럿 있으면, 그 인자들 대신 이 객체 자체를 인자로 넘겨서 받은 쪽에서 쿼리를 실행하도록 한다.  **객체로부터 여러 값을 뽑아내서 인자 수가 늘어날 바엔 객체 자체를 넘기라는 말**
+
+만약 인자들을 객체로 묶어 사용하는 것이 원치않은 의존관계를 불러 일으킨다면 사용하지 않는 것이 낫다.
 
 ---
 
@@ -145,17 +182,37 @@ Rename Methods, Parameterize Method, Extract Superclass.
 
 ## B-4) Switch 문
 
+객체 지향의 다형성 개념을 이용하면 switch 문의 중복된 코드를 분리할 수 있다.
+
+경우의 수가 많지 않고, 시스템 내에서 해당 switch 분기문 자체로 인해 기능이 크게 분화되는 것이 아니라면
+다형성을 지원한다고 여러 클래스를 생성하는 게 오버헤드가 더 클 수도 있다.
+
 ---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## C-1) Divergent Change (확산적 변경)
 
+하나의 클래스가 여러 가지 이유로 자주 변경되는 경우
+
+SRP(단일 책임 원칙)을 만족시키도록 클래스를 추출하되,
+만약 추출한 클래스와 공통적인 기능이 있는 경우 부모-자식(super-sub)관계를 
+유지하도록 하면 된다. 
+
 ---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-## C-2) Parallel Inheritance Hierarchies (평행 상속 구조)
+## C-2) Shotgun Surgery (산탄총 수술)
+
+**확산적 변경** 과 반대로 한 가지 변경 사항이 여러 클래스의 수정을 조금씩 불러오는 경우이다 
+그렇다면 해당 변경 부분을 기존 클래스나 새로운 클래스로 이동시켜야 한다.
+
+---
+
+![bg w:1200 opacity:.04](img/bespinlogo.png)
+
+## C-3) Parallel Inheritance Hierarchies (평행 상속 구조)
 
 **어떤 클래스의 자식클래스(subclass)를 만들어야 하는 상황에서, 또다른 클래스를 위해 자식클래스를 만들 필요가 생길 수도 있다.**
 
@@ -167,7 +224,7 @@ ex) 다른 계층에 속하는 자식 클래스들이 표현하는 대상들이 
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-## C-2) Parallel Inheritance Hierarchies (평행 상속 구조)
+## C-3) Parallel Inheritance Hierarchies (평행 상속 구조)
 
 **SRP는 만족할 수 있다, 하지만...**
 
@@ -177,12 +234,6 @@ ex) 다른 계층에 속하는 자식 클래스들이 표현하는 대상들이 
   - 우선 한 쪽 계층의 객체들이 다른 쪽 계층의 객체들을 참조하도록 하고,
   - 참조된 쪽을 하나의 클래스로 만들어서 계층 관계를 없애라
 - 아니면 계층을 공통된 인터페이스를 갖는 하나의 계층으로 합칠 수도 있다.
-
----
-
-![bg w:1200 opacity:.04](img/bespinlogo.png)
-
-## C-3) Shotgun Surgery (산탄총 수술)
 
 ---
 
@@ -226,13 +277,7 @@ ex) 다른 계층에 속하는 자식 클래스들이 표현하는 대상들이 
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-## D-4) Code Duplication (코드 중복)
-
----
-
-![bg w:1200 opacity:.04](img/bespinlogo.png)
-
-## D-5) Speculative Generality (추측성 일반화)
+## D-4) Speculative Generality (추측성 일반화)
 
 **가끔 "만일을 대비" 해서 쓰이지 않을 기능을 미리 코드로 작성해놓을 때가 있다. 결과적으로 나중에 이해하기가 어려워진다.**
 
@@ -246,7 +291,7 @@ ex) 다른 계층에 속하는 자식 클래스들이 표현하는 대상들이 
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-## D-5) Speculative Generality (추측성 일반화)
+## D-4) Speculative Generality (추측성 일반화)
 
 - **프레임워크, 라이브러리** 같은 경우는 많은 메소드, 클래스 들이 내부에서는 쓰이 지 않아도 사용자들이 가져다 쓸 걸 예상하고 작성된 것이다.
   <br>
@@ -257,6 +302,11 @@ ex) 다른 계층에 속하는 자식 클래스들이 표현하는 대상들이 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## E-1) Feature Envy (기능에 대한 욕심)
+
+어떤 클래스에 속한 메소드가 해당 클래스의 것보다 다른 클래스의 데이터를 더 필요로 할 수도 있다.
+예를 들면, 다른 클래스의 필드를 사용하기 위해 getter를 많이 호출하는 경우
+
+굳이 해당 메소드를 갖고 있을 필요 없이 데이터를 많이 필요로 하는 대상 클래스로 이동시켜 역할을 위임하면 된다.
 
 ---
 
@@ -397,7 +447,7 @@ TBD 에서는 중심 브랜치가 되어서 개발자들이 모든 변경사항�
 
 배포되기 전에 개발자들이 Feature 브랜치들로부터 수정사항들을 적용하는 개발 전용 브랜치. 오래 지속되는 Feature 브랜치라고도 할 수 있다. 마스터로부터 분기되서 마스터와 평행하게 유지되고, 없애지 않는다.
 
-테스트 환경과 같이 비-배포환경 전용으로 동작하는 Dev 브랜치를 둘 수도 있다.
+테스트 환경과 같이 비-배포환경 전용으로 동작하는 Develop 브랜치를 둘 수도 있다.
 
 ---
 
@@ -486,7 +536,7 @@ master를 중심으로 하여 변경이 이루어지고, 대신 master로의 병
 
 ### 그리고 GitHub의 여러 기능을 이용하는 방식이기에 부가적인 효과를 얻을 수 있다(PR 이후 코드 리뷰, WebHook 사용한 자동 빌드 및 배포 등).
 
-### 마스터를 통해 주로 배포하고, 각 브랜치들이 바로 마스터에 병합되기에 <span style="color:#39f">배포가 잦은 경우에 적합하며 원활한 작업을 위해 CI, 배포 자동화가 필요하다.</span>
+### 마스터를 통해 주로 배포하고, 각 브랜치들이 바로 마스터에 병합되기에 <span style="color:#39f">배포가 잦은 경우에 적합하며 원활한 작업을 위해 CI/CD 자동화가 필요하다.</span>
 
 ---
 
@@ -582,15 +632,24 @@ master를 중심으로 하여 변경이 이루어지고, 대신 master로의 병
 
 ### **✔ Epic**
 
-\***\*An **epic\*\* is a large initiative issue type. Known as "parent" issues, epics contain smaller issues within them. They often represent large bodies of work that can break down into smaller tasks.
+이슈의 제일 큰 단위로 여러 Story, Task로 구성되는 업무의 큰 틀이라고 볼 수 있다.
 
-### **✔ Task**
+작성하기 나름이지만, 사용자 입장에서 기능에 해당하는 Story들을 하나의 주제로 묶을 수 있으면 Epic으로 설정해놓고 내부에 Story와 개발적인 내용인 Task들을 포함시키면 된다.
 
-A **task** is the most common issue type. They contain a more detailed description of a work item. Tasks can exist within a larger epic or exist all on their own.
+
+---
+
+![bg w:1200 opacity:.04](img/bespinlogo.png)
+
+## 이슈 타입
 
 ### **✔ Story**
 
-\***\*A **story\*\* is a feature or requirement from the user's perspective. Stories are commonly used by software development teams. They define work items in non-technical language.
+사용자 관점에서 바라보는 기능이나 요구사항에 해당한다. 그러므로 기능 구현의 기술적인 부분이 아니라 비개발적인 내용으로 작성된다.
+
+### **✔ Task**
+
+가장 일반적인 이슈 타입으로 Story 같이 사용자 관점이 아닌, 좀 더 세부적인 개발 관련한 내용을 작성한다.
 
 ---
 
@@ -600,11 +659,11 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 ### **✔ Bug**
 
-\***\*A **bug\*\* is an issue type that describes a problem or error in software development.
+SW 개발 도중 발생하는 에러나 문제에 해당 
 
 ### **✔ Subtask**
 
-\***\*A **subtask\*\* is an issue type that further defines tasks or stories. They are used to break down tasks, stories, or bugs into small work items.
+Task, Story를 좀 더 세분화해서 관리, 개발하기 위해 생성한 이슈
 
 ---
 
@@ -700,7 +759,7 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 > ## 하나의 SW 개발 방법론
 >
-> **소프트웨어를 개발하는 방법에 대한 이론**
+> **즉, 소프트웨어를 개발하는 방법에 대한 이론**
 
 ---
 
@@ -755,21 +814,28 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 ## Waterfall vs Agile
 
-모델에는 Waterfall, V-Shaped, Prototype, Spiral 등 여러가지가 존재하지만 애자일을 설명하기 위해 워터폴(Waterfall)과 비교 설명
+(모델에는 Waterfall, V-Shaped, Prototype, Spiral 등 여러가지가 존재하지만 애자일을 설명하기 위해 워터폴(Waterfall)과 비교 설명)
+<br>
 
 **Waterfall, 즉 폭포수 모델**은 기본적인 개발주기가 선형으로 진행된다.
 
 관리가 쉽고 문서가 체계적일 수 있지만, 앞 단계에 지장이 생길 경우 오랜 기간 동안 진행될 우려가 있으며, 프로젝트 완료 전까지 결과물을 확인할 수 없다.
 
 ---
+<!-- _class: default -->
+## Waterfall vs Agile
+
+![bg right:60% contain](img/agileprocess.png)
+
+> agile: 기민한,민첩한
+
+**애자일** 소프트웨어 개발 방식은 <span style="color:#37f;font-weight:bold;">팀원 간의 소통(공유, 피드백 등)</span> 을 통해 요구 사항 변경을 빠르게 적용하는데에 초점을 맞춘 개발 방식이다.
+
+---
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## Waterfall vs Agile
-
-> Agile 기민한, 민첩한
-
-**애자일** 소프트웨어 개발 방식은 <span style="color:#37f;font-weight:bold;">팀원 간의 소통(공유, 피드백 등)</span> 을 통해 요구 사항 변경을 빠르게 적용하는데에 초점을 맞춘 개발 방식이다.
 
 애자일에서는 워터폴 개발 방식과 달리 <span style="color:green;font-weight:bold;">개발 주기를 반복</span>하고, 반복마다 도출된 <span style="color:#c4f;font-weight:bold;">결과물에 대한 피드백</span>을 수용하면서 <span style="color:brown;font-weight:bold;">점진적으로 개발을 진행</span>한다.
 
@@ -812,13 +878,20 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 ---
 
-## Scrum
+![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-스크럼은 시장 조사 등 실행 외적인 것들에 대한 고민을 최대한 빨리하고 **실행에 초점을 맞추는 Lean Thinking**에 기반한다.
+# Scrum
 
-그리고 스크럼은 **반복적, 점진적**으로 계획을 짜고 개발 프로세스를 진행하여 도중 발생할 위험에 대해 더 정확하게 예측하고자 한다
+> 스크럼은 시장 조사 등 실행 외적인 것들에 대한 고민을 최대한 빨리하고 **실행에 초점을 맞추는 Lean Thinking**에 기반한다.
+<br>그리고 스크럼은 **반복적, 점진적**으로 계획을 짜고 개발 프로세스를 진행하여 도중 발생할 위험에 대해 더 정확하게 예측하고자 한다
 
 ---
+
+![bg](img/scrumprocess.png)
+
+---
+
+![bg w:1200 opacity:.04](img/bespinlogo.png)
 
 ## 스크럼에서 중요하게 여기는 가치
 
@@ -834,6 +907,8 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 ---
 
+![bg w:1200 opacity:.04](img/bespinlogo.png)
+
 ## 투명성의 중요함
 
 ### **투명성 → 검사 → 조정/적응**
@@ -844,78 +919,129 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
 ---
 
+<!-- _class: default -->
+
 ## Scrum Team
 
-# 그림 새로 넣을 것.
+![bg left fit](img/scrumteam.png)
 
-하나의 스크럼 팀은 크게
-
+하나의 스크럼 팀은 크게 
 - **한명의 PO(제품소유자)**
+- **한명의 SM(스크럼마스터)**
+- **개발자들**
+
+로 구성되어 이해관계자, 고객과 소통한다.
+
+---
+<!-- _class: default -->
+
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
+
+### **PO(제품소유자)**
 
   **PO**는 고객, 이해관계자들의 요구사항을 반영한 제품 백로그를 설정하고 그 우선순위를 관리하며 백로그를 개발하도록 지시한다. 그리고 개발자들의 개발 결과물을 확인한다.
 
-- **한명의 SM(스크럼마스터)**
+### **SM(스크럼마스터)**
 
   **SM**은 개발자팀에 스크럼이 정착되도록 하는 관리자 역할과 이해관계자와의 중간다리 역할을 한다. 작업 진행의 장애 요소를 해결하고, 기간 안에 작업이 끝날 수 있게 이슈 모니터링과 트래킹을 담당하며, 데일리 스크럼 미팅을 주관한다. 또한 이해관계자들이 스크럼 방식을 이해하도록 도와 스크럼 팀 간의 장벽을 낮춘다.
 
-- **개발자들**
+---
 
-로 구성되어 고객(사용자)과 stackholder(이해관계자)들과 소통한다.
+![bg opacity:.2](img/scrumprocess.png)
+
+## 백로그(Backlog)
+
+- **제품 백로그(Product Backlog)** 는 프로젝트 목표이자 할 일의 목록을 의미한다.
+  - 제품 백로그는 PO에 의해 정의된 제품의 요구사항인 **사용자 스토리(User Story)** 의 집합이다.
+  - **사용자 스토리** 는 사용자 관점에서 바라보는 기능에 대한 설명이다.
 
 ---
 
-## 구성과 순서
+![bg opacity:.2](img/scrumprocess.png)
 
-![Untitled](Scrum%20&%20Kanban%2091f4ab1209fb428c85b9308f2930b4e9/Untitled%202.png)
+## 스프린트(Sprint)
 
-- **제품 백로그(Product Backlog)**는 프로젝트 목표이자 할 일의 목록을 의미한다.
-  - 제품 백로그는 PO에 의해 정의된 제품의 요구사항인 **사용자 스토리(User Story)**의 집합이다.
-  - **사용자 스토리**는 사용자 관점에서 바라보는 기능에 대한 설명이다.
-- **스프린트(Sprint)**는 스크럼에서의 개발 주기이다.
-  - **스프린트 계획 미팅(Sprint Meeting)**을 잡아 보통 1~4주 동안 진행될 스프린트의 목표와 필요한 작업을 제품 백로그에서 가져와 **스프린트 백로그(Sprint Backlog)**를 구성한다.
+- **스프린트(Sprint)** 는 스크럼에서의 개발 주기이다.
+  - **스프린트 계획 미팅(Sprint Meeting)** 을 잡아 보통 1~4주 동안 진행될 스프린트의 목표와 필요한 작업을 제품 백로그에서 가져와 **스프린트 백로그(Sprint Backlog)** 를 구성한다.
   - 이전 스프린트에서 미완된 작업이 넘어오기도하고, 지금까지의 진행 속도와 양을 참고하여 다음 스프린트 작업량을 좀 더 확실하게 정할 수 있다.
   - 스프린트가 마찰없이 원활하게 종료되기 위해서는 PO와 개발자들이 각 백로그들의 '완료' 기준에 대한 합의를 사전에 해야 한다. 또한 스프린트를 통해 이해관계자에게 전달할 가치를 설정하는 것이 제품의 유용성을 높이는 데에 영향을 끼친다.
-- 매일 진행하는 **데일리 스크럼 미팅(Daily Scrum Meeting)**
+
+---
+
+![bg opacity:.2](img/scrumprocess.png)
+
+## 스프린트(Sprint)
+
+- **데일리 스크럼 미팅(Daily Scrum Meeting)**
 
   어제/오늘의 할 일과 장애(Impediment) 등을 '공유' 하고,번다운 차트(Burn-down chart)와 같은 다이어그램을 통해 작업량 대비 속도를 확인하여 진행 방향을 논의한다
 
-- 하나의 스프린트가 끝나면, **스프린트 리뷰(Sprint Review)**와 **스프린트 회고(Sprint Retrospective)**를 진행한다
+---
+
+![bg opacity:.2](img/scrumprocess.png)
+
+## 스프린트(Sprint)
+
+- 하나의 스프린트가 끝나면, **스프린트 리뷰(Sprint Review)** 와 **스프린트 회고(Sprint Retrospective)** 를 진행한다
   - 스프린트 리뷰는 **개발 결과물**을 이해관계자, 고객, PO에게 공유하고 점검하는 자리이다. 그리고 결과물의 개선 사항과 프로젝트 진행 상황에 대해 논의한다.
   - 스프린트 회고는 **진행했던 스프린트**를 되돌아보며 일의 효율을 높이기 위한 자리이다. 이번 스프린트에서 잘 한 점, 문제에 대해 얘기하고 해결 방안을 논의 해서 다음 스프린트가 개선된 채로 진행되도록 해야한다.
 
 ---
 
+<!-- _class: default -->
+
+![bg w:1200 opacity:.04](img/bespinlogo.png)
+
 # Kanban
 
-> Toyota의 Just-In-Time 제조 공정을 David J.Anderson이 수정
-
+> **정해진 기간(Sprint)의 계획을 작성하고 개발하는 Scrum과 달리, 
+일의 전체 흐름을 중시하는 연속적 흐름 처리 방식**
+ 
 ---
 
-## Scrum & Kanban
+<!-- _class: default -->
 
-- **스크럼과 비교해서 칸반의 가장 큰 차이는 스프린트 유무이다.**
+![bg w:1200 opacity:.04](img/bespinlogo.png)
 
-  **개발 프로세스를 특정 기간 단위로 나누어 진행하고 리뷰하지 않는다.**
+## Kanban & Scrum
 
-  그러면 안되겠지만, 스프린트 내용이 변경될 경우, 더 많은 미팅을 잡아야할 수도 있고 미팅에 드는 시간이 늘어날 것이다. 그래서 스크럼에서는 계획을 세울 때 추정을 정확히 하고자 신경써야한다. 스프린트라는 시간적인 제약을 두고 작업을 하기 때문이다.
+### 가장 큰 차이는 스프린트 유무
+
+  즉, 개발 프로세스를 특정 기간 단위로 나누어 진행하고 리뷰하지 않는다.
+  일어나서는 안되지만, 스프린트 내용이 변경될 경우 회의 시간이 늘어날 것이다. 그래서 스크럼에서는 계획을 세울 때 추정을 정확히 하고자 신경써야한다. 스프린트라는 시간적인 제약을 두고 작업을 하기 때문이다.
 
   이처럼 스크림에서는 스프린트라는 쪼개진 범위를 잘 제어하는 것이 중요한 반면에, 칸반은 프로젝트 전체의 흐름을 더 중시한다.
 
-  즉 스프린트 처럼 데드라인이 존재하지 않는다. 대신 **지속적인 배포**와 **유연성**에 좀 더 초점을 맞춘다.
+  즉 스프린트 처럼 데드라인이 존재하지 않는다. <span style="color:red;font-weight:bold;opacity:.6;">대신 **지속적인 배포**와 **유연성**에 좀 더 초점을 맞춘다..?</span>
 
-- **워크플로우(Workflow)**
+---
 
-  대신, 작업의 진행 상태를 미리 구분 짓고 상태 변화의 흐름인 **워크 플로우(workflow)**를 정의한하고 진행중인 업무를 **WIP(Work In Process)**라는 용어로 부른다.
+
+![bg ßßopacity:.9 saturate:4.0](img/kanban.jpeg)
+
+---
+
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
+
+## 워크플로우(Workflow)
+
+  스프린트 대신, 작업의 진행 상태를 미리 구분 짓고 상태 변화의 흐름인 **워크 플로우(workflow)** 를 정의한하고 진행중인 업무를 **WIP(Work In Process)** 라는 용어로 부른다.
 
   무분별하게 작업들을 진행하는 것은 아니고, **단계 별로 처리할 수 있는 WIP를 제한**하고, 작업들의 **우선순위**를 두는 방식으로 효율성을 높인다.
 
   **WIP 현황을 통해 전체 중 어느 단계에서 병목이 일어나는 지와 프로젝트 전체 진행 상황 파악할 수 있다.**
 
+---
+
+<!-- _class: default -->
+
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
+
 - **수영 레인(Swim Lane)**
 
   칸반 보드(테이블)에서, 작업의 각 단계는 열, 그리고 열로 이루어진 **테이블의 각 행을 수영 레인**이라고 부른다.수영 레인들을 할당하는 기준은 작업의 큰 틀(Epic), 하나의 제품, 개발자 등 여러 가지가 될 수 있다.
 
-- 배포
+- **배포**
 
   스크럼 처럼 미리 정해진 스프린트 단위로 검토, 배포하지 않고 칸반에서는 어느 때에든 준비가 되었다면 업데이트가 적용될 수 있다. 일찍 완성되었다면 스프린트 리뷰처럼 기다릴 필요가 없다.
 
@@ -923,25 +1049,56 @@ A **task** is the most common issue type. They contain a more detailed descrip
 
   애자일 코치를 둘 수는 있지만 한 명의 '칸반 마스터(스크럼 마스터 처럼)'는 존재하지 않고 모든 이가 칸반 보드를 관리한다.
 
-- **Metrics**
+---
 
-  스크럼에서는 스프린트 기간이 정해져 있기 때문에, 속도를 주 메트릭으로 삼는다. 이전에 스프린트들에서 평균적으로 완료했던 작업량이 있으면, 동일한 기간의 다음 스프린트 백로그를 해당 평균치를 크게 넘는 작업량으로 채울 순 없을 것이다.
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
 
-  칸반에서는 Lead Time(제품 요청~전달까지 걸리는 시간)이나 Cycle time(실제 생산부터 출하까지 걸리는 시간, Lead Time > Cycle Time) 과 같이 제품 제작에 있어 처음부터 끝까지 드는 시간을 메트릭으로 삼는다.
+## Metrics
 
-스크럼, 칸반 중 어떤 방식이 더 유용할 지는 **프로젝트와 팀의 성격**에 따라 다르다.
-그렇지만,
+  ### 스크럼에서는 스프린트 기간이 정해져 있기 때문에, 속도를 주 메트릭으로 삼는다. 
+  이전에 스프린트들에서 평균적으로 완료했던 작업량이 있으면, 동일한 기간의 다음 스프린트 백로그를 해당 평균치를 크게 넘는 작업량으로 채울 순 없을 것이다.
 
-- 스프린트 미팅에 많은 시간적, 정신적 비용이 드는 경우
+  ### 칸반에서는 개발 전체에 드는 시간을 메트릭으로 삼는다.
+  - Lead Time (제품 요청 ~ 전달까지 걸리는 시간) 
+  - Cycle time (실제 생산부터 출하까지 걸리는 시간, Lead Time > Cycle Time)
+
+---
+
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
+
+<h1 style="color:#d22;font-style:italic;position:absolute;top:15%;
+align-self:center">Scrum vs Kanban ?</h1>
+
+둘 중 어떤 방식이 더 유용할 지는 **프로젝트와 팀의 성격**에 따라 다르다.
+그렇지만,다음과 같은 경우라면 칸반 방식이 주는 이점을 기대할 수있다.
+
+- 수직적인 팀 운영방식
+  - 관리자가 포함된 미팅이 '공유'보다 '보고'의 자리일 경우
+  - 스프린트 미팅에 많은 시간적, 정신적 비용이 드는 경우
   (개발 외적인 논의가 미팅에 계속 포함되거나, 예상 밖의 스프린트 변경으로 인한 오버헤드 가 번아웃을 유발할 때)
 - 스프린트 추정이 어려울 경우
 - 그러한 잘못된 추정으로 시간적 제약에 쫓겨 생산성이 오히려 떨어질 경우
-- 관리자가 포함된 미팅이 '공유'보다 '보고'의 자리가 되어갈 경우
 
-라면 칸반 방식이 주는 이점을 기대할 수있다.
 
-Jira 같은 소프트웨어를 사용해 **두 방식을 섞어서 사용**하는 팀들도 많다.
+--- 
 
-애자일을 적용하려는 상황에서 어떤 방식을 사용할 지 모르겠다면 둘 다 사용해보고 개선점을 파악한 후 맞춰나가면 된다.
+![bg cover w:1200 opacity:.04](img/bespinlogo.png)
+
+### Jira 같은 소프트웨어를 사용해 **두 방식을 섞어서 사용**하는 팀들도 많다.
+<br>
+
+> 애자일을 적용하려는 상황에서 어떤 방식을 사용할 지 모르겠다면 둘 다 사용해보고 개선점을 파악한 후 맞춰나가면 된다.
 
 ---
+
+![bg fit width:1200 opacity:.08](img/bespinlogo.png)
+
+<h1 style="position:absolute;
+  top:0;right:0;bottom:0;left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.9;
+  font-size:100px;
+"> 감사합니다 </h1>
+
