@@ -733,6 +733,23 @@ Task, Story를 좀 더 세분화해서 관리, 개발하기 위해 생성한 이
 
 ---
 
+![bg contain](img/backlogs.png)
+
+---
+
+![bg contain](img/kanban.png)
+
+---
+
+![bg contain](img/story.png)
+
+---
+
+![bg fit](img/mention.png)
+![bg left:105% width:80%](img/email.png)
+
+---
+
 <!-- _class: default -->
 
 ![bg 40% opacity:.6](img/confluencelogo.jpeg)
@@ -742,14 +759,72 @@ Task, Story를 좀 더 세분화해서 관리, 개발하기 위해 생성한 이
 
 ---
 
+![bg 40% opacity:.1](img/confluencelogo.jpeg)
+
+## Confluence 
+ 
+ > **Atlassian 의 Wiki 기반 협업 도구**
+
+- 요구사항
+- UX/UI
+- 디자인,기술
+
+등 다양한 **Jira에서 생성한 이슈와 관련한 문서를 생성하고 관리**할 수 있게 해준다.
+
+---
+
+![bg fit](img/confluenceinit.png)
+
+---
+
+![bg width:90%](img/linkconfluence.png)
+![bg left:99% width:95%](img/confluencepage.png)
+
+---
+
+
 <!-- _class: default -->
 
 ![bg 40% opacity:.6](img/bitbucketlogo.jpeg)
 
 <h1 style="font-size:88px;">Bitbucket</h1>
-<h2 style ='font-size:48px'>소스 형상 관리</h2>
+<h2 style ='font-size:48px'>소스 형상 관리 툴</h2>
 
 ---
+
+![bg 40% opacity:.1](img/bitbucketlogo.jpeg)
+
+## Bitbucket
+
+ > **Atlassian에서 제공하는 형상 관리 도구**
+
+**Jira에서 생성한 이슈**와 연결하여 브랜치를 생성하고 커밋과 연동시켜준다.
+
+---
+
+
+![bg](img/jiraconnection.png)
+
+---
+
+![bg](img/jiraconnected.png)
+
+___
+
+![bg fit](img/nobranch.png)
+___
+
+![bg w:85%](img/createbranch.png)
+___
+
+![bg fit](img/hasbranch.png)
+___
+
+![bg w:90%](img/smartcommit.png)
+___
+
+![bg fit](img/commitonissue.png)
+___
 
 ![bg w:1200 opacity:.04](img/bespinlogo.png)
 
@@ -952,8 +1027,8 @@ Task, Story를 좀 더 세분화해서 관리, 개발하기 위해 생성한 이
 ## 백로그(Backlog)
 
 - **제품 백로그(Product Backlog)** 는 프로젝트 목표이자 할 일의 목록을 의미한다.
-  - 제품 백로그는 PO에 의해 정의된 제품의 요구사항인 **사용자 스토리(User Story)** 의 집합이다.
-  - **사용자 스토리** 는 사용자 관점에서 바라보는 기능에 대한 설명이다.
+  - 제품 백로그는 PO에 의해 정의된 제품의 요구사항인 **사용자 스토리(User Story)나 작업(Task)** 의 집합이다.
+    (**사용자 스토리** 는 사용자 관점에서 바라보는 기능에 대한 설명)
 
 ---
 
