@@ -33,7 +33,7 @@ section.title-topleft {
 }
 
 section.title-topleft h2 {
-  position: fixed;
+  position: absolute;
   top: 15%;
   left: 6%;
   max-width: 88%;
